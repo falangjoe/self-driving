@@ -44,6 +44,28 @@ Here is a bar chart that summarizing the training data.
 
 ### Design and Test a Model Architecture
 
+|Layer                  |Description                                      | 
+|:---------------------:|:-----------------------------------------------:| 
+|Input         		       | 32x32x3 tf.uint8							                         | 
+|Normalize     	        | outputs 32x32x3 tf.float32  	                   |
+|Convolution 5x5     	  | 1x1 stride, valid padding, outputs 28x28x(3x6) 	|
+|RELU					              |												                                     |
+|Max pooling 2x2	      	| 2x2 stride, outputs 14x14x18   				             |
+|Convolution 5x5     	  | 1x1 stride, valid padding, outputs 10x10x(3x16) |
+|RELU					              |												                                     |
+|Max pooling 2x2	      	| 2x2 stride, outputs 5x5x48   				               |
+|Drop out	      	       | 0.5 keep probility  				                        |
+|Convolution 5x5     	  | 1x1 stride, valid padding, outputs 1x1x(2x240) 	|
+|RELU					              |												                                     |
+|Drop out	      	       | 0.5 keep probility  				                        |
+|Convolution 1x1     	  | 1x1 stride, valid padding, outputs 1x1x(2x84) 	 |
+|RELU					              |												                                     |
+|Drop out	      	       | 0.5 keep probility  				                        |
+|Convolution 1x1     	  | 1x1 stride, valid padding, outputs 1x1x43 	     |
+|Reduce mean				        | outputs 43 
+|Softmax				            | 
+
+
 ####1. Describe how you preprocessed the image data. What techniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, and provide example images of the additional data. Then describe the characteristics of the augmented training set like number of images in the set, number of images for each class, etc.)
 
 As a first step, I decided to convert the images to grayscale because ...

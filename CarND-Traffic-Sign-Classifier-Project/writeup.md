@@ -98,12 +98,21 @@ My final model results were:
 
 ### Inference
 
-Here are five German traffic signs that I found on the web:
+I tested the network on 12 images of German traffic signs that I found on the web. The accurracy was 0.833 on these images. Below are five of the images with their predictions.
 
+I thought the network might have a problem with this sign. It is rotated, none of the training data is rotated, and there are not that many training examples for this sign. Although, the prediction was good.
 ![alt text][prediction0] 
-![alt text][prediction1] 
+
+The network was way off on this sign. It could be because it does not have a white border or the thick post. 
+![alt text][prediction1]
+
+You could image the network having a problem on this sign, because the training set contains several similiar signs. Although, it did good on it.
 ![alt text][prediction25] 
+
+The network did not predict this sign correctly, but it was the second runner up and similiar to prediction.
 ![alt text][prediction27] 
+
+The network had no doubt about this one and several other that were unique in the training set.
 ![alt text][prediction40]
 
 The first image might be difficult to classify because ...

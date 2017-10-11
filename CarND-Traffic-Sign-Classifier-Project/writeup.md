@@ -28,7 +28,7 @@ The goals / steps of this project are the following:
 [prediction27]: ./predictions/27.JPG
 [prediction38]: ./predictions/38.JPG
 [prediction40]: ./predictions/40.JPG
-
+[layer]: ./layer_visualization.JPG
 
 [image2]: ./examples/grayscale.jpg "Grayscaling"
 [image3]: ./examples/random_noise.jpg "Random Noise"
@@ -117,7 +117,9 @@ The network had no doubt about this one and several other that were unique in th
 
 
 
-### (Optional) Visualizing the Neural Network (See Step 4 of the Ipython notebook for more details)
-####1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?
+###  Visualizing the Neural Network
+Here is the visualization of the first layer activations for one of the test internet images. It interesting to note that the back ground has been completely eliminated and the network is just focusing on the sign. Also, it looks like there might be filtering by color and gradients going on.
+
+![alt text][layer]
 
 

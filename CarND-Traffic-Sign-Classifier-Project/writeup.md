@@ -16,6 +16,20 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 
 [image1]: ./training_data_barchart.JPG "Training Data Visualization"
+[prediction0]: ./predictions/0.JPG
+[prediction1]: ./predictions/1.JPG
+[prediction2]: ./predictions/2.JPG
+[prediction8]: ./predictions/8.JPG
+[prediction11]: ./predictions/11.JPG
+[prediction12]: ./predictions/12.JPG
+[prediction13]: ./predictions/13.JPG
+[prediction17]: ./predictions/17.JPG
+[prediction25]: ./predictions/25.JPG
+[prediction27]: ./predictions/27.JPG
+[prediction38]: ./predictions/38.JPG
+[prediction40]: ./predictions/40.JPG
+
+
 [image2]: ./examples/grayscale.jpg "Grayscaling"
 [image3]: ./examples/random_noise.jpg "Random Noise"
 [image4]: ./examples/placeholder.png "Traffic Sign 1"
@@ -42,9 +56,7 @@ You're reading it! and here is a link to my [project code](Traffic_Sign_Classifi
 Here is a bar chart that summarizing the training data.
 ![alt text][image1]
 
-### Design and Test a Model Architecture
-
-#Data Preprocessing
+### Data Preprocessing
 
 The images were normalized using numpy. After I looking at the memory usage, I realized that the normalized data was taking up around a gigabyte of memory. Therefore, I moved the normalization of the data to tensorflow. This reduced the amount of system memory allocated by about a gigabyte and seemed to speed up training, but I did not do get any numbers on this.
 
@@ -52,7 +64,7 @@ I wanted to created a training pipeline that was more closer to what would be us
 
 I was planning on augmenting the dataset using some set of image transformation and wanted to implement a more close to production training pipe line. To make this configurable, I looked into tf.contrib.data.Dataset for training and inference. 
 
-#Network
+### Network
 
 For the network, I started out with the LeNet network. Since I had just figured out how to convert fully connected layers to convolutional layers, I converted the fully connected layers to convolutions. Although, I did not run it on larger than 32x32 images.
 I trained the network, but the training accurracy was low. Since there was now 3 channels, I just decided to triple the number of filters in the convoluional layers and doubld them in the fully connected layers. Now, when I trained the network, it would overfit. Therefore, I added dropout to every layer except the first and last. Leading to the network below.
@@ -84,48 +96,26 @@ My final model results were:
 * validation set accuracy of 0.966
 * test set accuracy of 0.954
 
-###Test a Model on New Images
+### Inference
 
-####1. Choose five German traffic signs found on the web and provide them in the report. For each image, discuss what quality or qualities might be difficult to classify.
+I tested the network on 12 images of German traffic signs that I found on the web. The accurracy was 0.833 on these images. Below are five of the images with their predictions.
 
-Here are five German traffic signs that I found on the web:
+I thought the network might have a problem with this sign. It is rotated, none of the training data is rotated, and there are not that many training examples for this sign. Although, the prediction was good.
+![alt text][prediction0] 
 
-![alt text][image4] ![alt text][image5] ![alt text][image6] 
-![alt text][image7] ![alt text][image8]
+The network was way off on this sign. It could be because it does not have a white border or the thick post. 
+![alt text][prediction1]
 
-The first image might be difficult to classify because ...
+You could imagine the network having a problem on this sign, because the training set contains several similiar signs.
+![alt text][prediction25]
 
-####2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
+The network did not predict this sign correctly, but it was the second runner up and similiar to prediction.
+![alt text][prediction27] 
 
-Here are the results of the prediction:
-
-| Image			        |     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
-| Stop Sign      		| Stop sign   									| 
-| U-turn     			| U-turn 										|
-| Yield					| Yield											|
-| 100 km/h	      		| Bumpy Road					 				|
-| Slippery Road			| Slippery Road      							|
+The network had no doubt about this one and several other that were unique in the training set.
+![alt text][prediction40]
 
 
-The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This compares favorably to the accuracy on the test set of ...
-
-####3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
-
-The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
-
-For the first image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
-
-| Probability         	|     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
-| .60         			| Stop sign   									| 
-| .20     				| U-turn 										|
-| .05					| Yield											|
-| .04	      			| Bumpy Road					 				|
-| .01				    | Slippery Road      							|
-
-
-For the second image ... 
 
 ### (Optional) Visualizing the Neural Network (See Step 4 of the Ipython notebook for more details)
 ####1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?

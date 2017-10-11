@@ -16,6 +16,20 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 
 [image1]: ./training_data_barchart.JPG "Training Data Visualization"
+[prediction0]: ./predictions/0.JPG
+[prediction1]: ./predictions/1.JPG
+[prediction2]: ./predictions/2.JPG
+[prediction8]: ./predictions/8.JPG
+[prediction11]: ./predictions/11.JPG
+[prediction12]: ./predictions/12.JPG
+[prediction13]: ./predictions/13.JPG
+[prediction17]: ./predictions/17.JPG
+[prediction25]: ./predictions/25.JPG
+[prediction27]: ./predictions/27.JPG
+[prediction38]: ./predictions/38.JPG
+[prediction40]: ./predictions/40.JPG
+
+
 [image2]: ./examples/grayscale.jpg "Grayscaling"
 [image3]: ./examples/random_noise.jpg "Random Noise"
 [image4]: ./examples/placeholder.png "Traffic Sign 1"
@@ -42,9 +56,7 @@ You're reading it! and here is a link to my [project code](Traffic_Sign_Classifi
 Here is a bar chart that summarizing the training data.
 ![alt text][image1]
 
-### Design and Test a Model Architecture
-
-#Data Preprocessing
+### Data Preprocessing
 
 The images were normalized using numpy. After I looking at the memory usage, I realized that the normalized data was taking up around a gigabyte of memory. Therefore, I moved the normalization of the data to tensorflow. This reduced the amount of system memory allocated by about a gigabyte and seemed to speed up training, but I did not do get any numbers on this.
 
@@ -52,7 +64,7 @@ I wanted to created a training pipeline that was more closer to what would be us
 
 I was planning on augmenting the dataset using some set of image transformation and wanted to implement a more close to production training pipe line. To make this configurable, I looked into tf.contrib.data.Dataset for training and inference. 
 
-#Network
+### Network
 
 For the network, I started out with the LeNet network. Since I had just figured out how to convert fully connected layers to convolutional layers, I converted the fully connected layers to convolutions. Although, I did not run it on larger than 32x32 images.
 I trained the network, but the training accurracy was low. Since there was now 3 channels, I just decided to triple the number of filters in the convoluional layers and doubld them in the fully connected layers. Now, when I trained the network, it would overfit. Therefore, I added dropout to every layer except the first and last. Leading to the network below.
@@ -84,14 +96,15 @@ My final model results were:
 * validation set accuracy of 0.966
 * test set accuracy of 0.954
 
-###Test a Model on New Images
-
-####1. Choose five German traffic signs found on the web and provide them in the report. For each image, discuss what quality or qualities might be difficult to classify.
+### Inference
 
 Here are five German traffic signs that I found on the web:
 
-![alt text][image4] ![alt text][image5] ![alt text][image6] 
-![alt text][image7] ![alt text][image8]
+![alt text][prediction0] 
+![alt text][prediction1] 
+![alt text][prediction25] 
+![alt text][prediction27] 
+![alt text][prediction40]
 
 The first image might be difficult to classify because ...
 

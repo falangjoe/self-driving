@@ -106,8 +106,8 @@ I thought the network might have a problem with this sign. It is rotated, none o
 The network was way off on this sign. It could be because it does not have a white border or the thick post. 
 ![alt text][prediction1]
 
-You could image the network having a problem on this sign, because the training set contains several similiar signs. Although, it did good on it.
-![alt text][prediction25] 
+You could imagine the network having a problem on this sign, because the training set contains several similiar signs.
+![alt text][prediction25]
 
 The network did not predict this sign correctly, but it was the second runner up and similiar to prediction.
 ![alt text][prediction27] 

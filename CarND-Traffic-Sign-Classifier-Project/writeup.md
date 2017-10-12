@@ -58,16 +58,14 @@ Here is a bar chart that summarizing the training data.
 
 ### Data Preprocessing
 
-The images were normalized using numpy. After I looking at the memory usage, I realized that the normalized data was taking up around a gigabyte of memory. Therefore, I moved the normalization of the data to tensorflow. This reduced the amount of system memory allocated by about a gigabyte and seemed to speed up training, but I did not do get any numbers on this.
+The images were normalized using numpy. After looking at the memory usage, I realized that the normalized data was taking up around a gigabyte of memory. Therefore, I moved the normalization of the data to tensorflow. This reduced the amount of system memory allocated by about a gigabyte and seemed to speed up training, but I did not get any numbers on this.
 
-I wanted to created a training pipeline that was more closer to what would be used in production. Therefore, I used tf.contrib.data.Dataset to create datasets for training and inference. I was planning on using these for configuring a data augmentation pipleine, but I was able to get higher that 93% validation set accurracy without augmentation. 
-
-I was planning on augmenting the dataset using some set of image transformation and wanted to implement a more close to production training pipe line. To make this configurable, I looked into tf.contrib.data.Dataset for training and inference. 
+I wanted to created a training pipeline that was closer to what would be used in production. Therefore, I used tf.contrib.data.Dataset to create datasets for training and inference. I was planning on using these for configuring a data augmentation pipeline, but I was able to get higher that 93% validation set accuracy without augmentation. 
 
 ### Network
 
 For the network, I started out with the LeNet network. Since I had just figured out how to convert fully connected layers to convolutional layers, I converted the fully connected layers to convolutions. Although, I did not run it on larger than 32x32 images.
-I trained the network, but the training accurracy was low. Since there was now 3 channels, I just decided to triple the number of filters in the convoluional layers and doubld them in the fully connected layers. Now, when I trained the network, it would overfit. Therefore, I added dropout to every layer except the first and last. Leading to the network below.
+I trained the network, but the training accurracy was low. Since there were now 3 channels, I just decided to triple the number of filters in the convolutional layers and doubled them in the fully connected layers. Now, when I trained the network, it would overfit. Therefore, I added dropout to every layer except the first and last. Leading to the network below.
 
 
 |Layer                  |Description                                      | 

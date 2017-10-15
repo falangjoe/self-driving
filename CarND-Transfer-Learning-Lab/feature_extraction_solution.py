@@ -8,13 +8,13 @@ flags = tf.app.flags
 FLAGS = flags.FLAGS
 
 # command line flags
-flags.DEFINE_string('training_file', '', "Bottleneck features training file (.p)")
-flags.DEFINE_string('validation_file', '', "Bottleneck features validation file (.p)")
+flags.DEFINE_string('network', '', "Bottleneck features training file (.p)")
+flags.DEFINE_string('dataset', '', "Bottleneck features validation file (.p)")
 flags.DEFINE_integer('epochs', 50, "The number of epochs.")
 flags.DEFINE_integer('batch_size', 256, "The batch size.")
 
 
-def load_bottleneck_data(training_file, validation_file):
+def load_bottleneck_data(network,dataset):
     """
     Utility function to load bottleneck features.
 
@@ -22,6 +22,8 @@ def load_bottleneck_data(training_file, validation_file):
         training_file - String
         validation_file - String
     """
+    training_file = "./bottlenecks/" + network + "_" + dataset + "_100_bottleneck_features_train.p"
+    validation_file = "./bottlenecks/" + network + "_" + dataset + "_bottleneck_features_validation.p"
     print("Training file", training_file)
     print("Validation file", validation_file)
 
@@ -40,7 +42,7 @@ def load_bottleneck_data(training_file, validation_file):
 
 def main(_):
     # load bottleneck data
-    X_train, y_train, X_val, y_val = load_bottleneck_data(FLAGS.training_file, FLAGS.validation_file)
+    X_train, y_train, X_val, y_val = load_bottleneck_data(FLAGS.network, FLAGS.dataset)
 
     print(X_train.shape, y_train.shape)
     print(X_val.shape, y_val.shape)

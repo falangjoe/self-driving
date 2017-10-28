@@ -7,37 +7,79 @@ from sklearn.utils import shuffle
 def load_log_file(file):
     with open(file) as csvfile:
         reader = csv.reader(csvfile)
-        result = [[line[0],float(line[3])] for line in reader]
+        result = [[line[0],line[1],line[2],float(line[3])] for line in reader]
         return result
     
 def load_log_files():
-    folders = [0,1,3,4,4,4,4,4,4,4,4,5]
+    folders = [6]
     result = []
     
     for ii in folders:
         file = './data/{0}/driving_log.csv'.format(ii)
-        result += load_log_file(file)    
+        log = load_log_file(file) 
+        result += log
     return result
     
-logs = load_log_files()
+def flip_frame(frame):
+    image_flipped = np.fliplr(frame[0])
+    angle_flipped = -frame[1]
+    return [image_flipped,angle_flipped]
+
+
+def load_frames(log):
     
-X_train = np.array([cv2.imread(log[0]) for log in logs])
-y_train = np.array([log[1] for log in logs])
+    offset = 0.1 #* (1.0 / 25.0)
+    
+    center_angle = log[3]
+    center_image = cv2.imread(log[0])
+    center_frame = [center_image,center_angle]
+    yield center_frame
+    yield flip_frame(center_frame)
+ 
+    
+    #left_image = cv2.imread(log[1])
+    #left_angle = center_angle - offset
+    #left_frame = [left_image,left_angle] 
+    #yield left_frame
+##
+    #right_image = cv2.imread(log[2])
+    #right_angle = center_angle + offset
+    #right_frame = [right_image,right_angle]
+    #yield right_frame
+  
+    
+    
+train_logs,valid_logs = train_test_split(load_log_files(),test_size=0.1)
 
-X_train, X_valid, y_train, y_valid = train_test_split(X_train,y_train,test_size=0.1)
-
+def generate_frames(logs):
+    logs = shuffle(logs)
+    for log in logs:
+        frames = load_frames(log)
+        for frame in frames:
+            yield frame
+            
+            
 batch_size = 128
-print(len(y_train) // batch_size)
-
-def generator(X,y):
+            
+def generator(logs):
+    
     while True:
-        X,y = shuffle(X,y) 
-        for i in range(0,len(y) // batch_size):
-            inputs = X[i * batch_size : (i+1) * batch_size]
-            targets = y[i * batch_size : (i+1) * batch_size]
-            yield (inputs,targets)
+        frames = generate_frames(logs)
+        
+        inputs = []
+        targets = []
+        
+        for frame in frames:
+            inputs.append(frame[0])
+            targets.append(frame[1])
+            if(len(targets) >= batch_size):
+                yield np.array(inputs), np.array(targets)
+                inputs = []
+                targets = []
+                
 
-
+            
+                
 from keras.models import Sequential
 from keras.layers import Flatten, Dense, Lambda
 from keras.layers import Conv2D, Cropping2D, Dropout
@@ -46,25 +88,29 @@ from keras.layers.pooling import MaxPooling2D
 model = Sequential()
 model.add(Lambda(lambda x : (x / 255.0) - 0.5, input_shape=(160,320,3)))
 model.add(Cropping2D(cropping=((70,25),(0,0))))
-model.add(Conv2D(3 * 6, (5, 5), activation="relu"))
-model.add(MaxPooling2D())
-model.add(Conv2D(3 * 16, (5, 5), activation="relu"))
-model.add(MaxPooling2D())
-model.add(Dropout(0.5))
+model.add(Conv2D(1 * 18, (3, 3), activation="relu"))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Conv2D(1 * 18, (3, 3), activation="relu"))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Conv2D(1 * 18, (3, 3), activation="relu"))
+model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Flatten())
-model.add(Dense(2 * 120,activation="relu"))
+model.add(Dense(1 * 360,activation="relu"))
 model.add(Dropout(0.5))
-model.add(Dense(2 * 84,activation="relu"))
+model.add(Dense(1 * 120,activation="relu"))
 model.add(Dropout(0.5))
+model.add(Dense(1 * 10,activation="relu"))
+#model.add(Dropout(0.5))
 model.add(Dense(1))
 
 model.compile(loss='mse', optimizer='adam')
 
 model.fit_generator(
-    generator(X_train,y_train),
-    len(y_train) // batch_size,
-    epochs=10,
-    validation_data = (X_valid,y_valid))
+    generator(train_logs),
+    2 * len(train_logs) // batch_size,
+    epochs=5,
+    validation_data = generator(valid_logs),
+    validation_steps = 2 * len(valid_logs) // batch_size)
 
 #model.fit(X_train,y_train, validation_split=0.2, shuffle=True, epochs=5)
 

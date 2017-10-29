@@ -3,3 +3,4 @@ __pycache__
 windows_sim
 data
 model.h5
+*model.h5

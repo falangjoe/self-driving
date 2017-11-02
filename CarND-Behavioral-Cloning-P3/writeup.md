@@ -1,4 +1,4 @@
-#**Behavioral Cloning** 
+# **Behavioral Cloning** 
 
 ---
 
@@ -49,51 +49,35 @@ The model.py file contains the code for training and saving the convolution neur
 
 ####1. An appropriate model architecture has been employed
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) 
-
-The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). 
+The model is the one from  Nvidia's End to End Learning for Self-Driving Cars paper with relu activations.  
 
 ####2. Attempts to reduce overfitting in the model
 
-The model contains dropout layers in order to reduce overfitting (model.py lines 21). 
-
-The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+The training was terminated after 5 epochs to reduce overfitting.
 
 ####3. Model parameter tuning
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
+The model used an adam optimizer, so the learning rate was not tuned manually.
 
 ####4. Appropriate training data
 
-Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road ... 
-
 For details about how I created the training data, see the next section. 
 
-###Model Architecture and Training Strategy
+### Model Architecture and Training Strategy
 
 ####1. Solution Design Approach
 
-The overall strategy for deriving a model architecture was to ...
+First, I started off with the LeNet model and data generated from driving around the track in both directions. The car mostly stayed on the track, but would always leave the track at the turn after the bridge. 
 
-My first step was to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
+Second, I tried to augment the data using the left and right images and various steering correct factors. This made model perform horribly. I tried to modify the model in various ways by adding more convolutional layers, changing the out of the convolution sizes, and adding dropout. Nothing I did seemed to improve from the first approach. Therefore, I stop trying to use the left and right images. Later, I would realize that I had the signs on the steering correction factors backwards.
 
-In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
+Third, to try to get the car to not leave the track on the turn after the bridge, I generated data of the car successfully handling curves. Then, I used a higher proportion of this data along with the original data to train the network. Again, I tried various modification to Lenet without getting any good results.
 
-To combat the overfitting, I modified the model so that ...
-
-Then I ... 
-
-The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track... to improve the driving behavior in these cases, I ....
-
-At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
+Fourth, I took all the training data and flipped each images so that I had equal numbers of images turning left and right. This would actually improve performance of whatever network I was using. This got me on the path to generating the training data that I detail below. Once I generated the new training data, I was able to get the car to stay on the road with almost every variation of the LeNet model that I tried.
 
 ####2. Final Model Architecture
 
-The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
-
-Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
-
-![alt text][image1]
+I ended up using the model from Nvidia's End to End Learning for Self-Driving Cars paper. I used relu activations for all layers except the last. Since, the network did not show maxpooling, the convolutions use a stride of 2. Although, I was able to get various version of the LeNet network to also work, Nvidia's network seemed to provide the smoothest and most lane centered drive.
 
 ####3. Creation of the Training Set & Training Process
 

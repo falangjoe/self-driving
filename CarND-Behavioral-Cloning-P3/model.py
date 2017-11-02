@@ -6,6 +6,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
 
 
+
+#Creates list of center, left, right frames. The left and right frames steering position is offset by 0.15.
 def read_frames(file):
     with open(file) as csvfile:
         reader = csv.reader(csvfile)
@@ -16,7 +18,8 @@ def read_frames(file):
             yield (angle, position, middle)
             yield (angle, position + 0.15, left)
             yield (angle, position - 0.15, right)
-    
+            
+#Groups frames by absolute value of steering angle.  
 def group_frames(frames):
     angles = list(map(lambda v : v[0], frames))
     keys = list(set(angles))
@@ -25,6 +28,7 @@ def group_frames(frames):
         samples[frame[0]].append(frame)
     return samples
 
+#Selects sample_count frames from each steering angle frame group.
 def pick_frames(samples):
     
     sample_count = 600
@@ -38,11 +42,13 @@ def pick_frames(samples):
             
     return picked_frames
 
+#Flips a frames image and steering angle.
 def flip_frame(frame):
     image_flipped = np.fliplr(frame[0])
     angle_flipped = -frame[1]
     return [image_flipped,angle_flipped]
 
+#Load a frames image and randomly flips the frame.
 def load_frame(frame):
     center_position = frame[1]
     center_image = cv2.imread(frame[2])
@@ -52,15 +58,17 @@ def load_frame(frame):
     else:
         return flip_frame(center_frame)
     
+#Creates list of frames to use for training csv.   
 def pick_training_data():
     all_frames = list(read_frames('./data/6/driving_log.csv'))
     samples =  group_frames(all_frames) 
     frames = pick_frames(samples)
     return frames
     
-
+#Split the list of training frames into training/validation frames.
 train_logs,valid_logs = train_test_split(pick_training_data(),test_size=0.1)
 
+#Shuffles list of frames and loads images. 
 def generate_frames(logs):
     logs = shuffle(logs)
     for log in logs:
@@ -68,7 +76,8 @@ def generate_frames(logs):
         yield frame
             
 batch_size = 128
-            
+
+#Generator used by keras for training and validation data.
 def generator(logs):
     
     while True:
@@ -93,6 +102,8 @@ from keras.layers import Flatten, Dense, Lambda
 from keras.layers import Conv2D, Cropping2D, Dropout
 from keras.layers.pooling import MaxPooling2D
 
+
+#Network from Nvidia's End to End Learning for Self-Driving Cars.
 model = Sequential()
 model.add(Lambda(lambda x : (x / 255.0) - 0.5, input_shape=(160,320,3)))
 model.add(Cropping2D(cropping=((70,25),(0,0))))

@@ -14,10 +14,9 @@ def read_frames(file):
             angle = 0.25 * (abs(position) // 0.01)
             middle,left,right = line[0],line[1],line[2]
             yield (angle, position, middle)
-            yield (angle, position + 0.25, left)
-            yield (angle, position - 0.25, right)
-            #yield (angle, position, middle, left, right)
-
+            yield (angle, position + 0.15, left)
+            yield (angle, position - 0.15, right)
+    
 def group_frames(frames):
     angles = list(map(lambda v : v[0], frames))
     keys = list(set(angles))
@@ -79,8 +78,6 @@ def generator(logs):
         targets = []
         
         for frame in frames:
-            #print('------------')
-            #print(frame)
             inputs.append(frame[0])
             targets.append(frame[1])
             if(len(targets) >= batch_size):
@@ -99,35 +96,16 @@ from keras.layers.pooling import MaxPooling2D
 model = Sequential()
 model.add(Lambda(lambda x : (x / 255.0) - 0.5, input_shape=(160,320,3)))
 model.add(Cropping2D(cropping=((70,25),(0,0))))
-model.add(Conv2D(1 * 18, (3, 3), activation="relu"))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Conv2D(1 * 18, (3, 3), activation="relu"))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Conv2D(1 * 18, (3, 3), activation="relu"))
-model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Conv2D(24, (5, 5), strides = (2,2), padding = "VALID", activation="relu"))
+model.add(Conv2D(36, (5, 5), strides = (2,2), padding = "VALID", activation="relu"))
+model.add(Conv2D(48, (5, 5), strides = (2,2), padding = "VALID", activation="relu"))
+model.add(Conv2D(64, (3, 3), strides = (2,2), padding = "VALID", activation="relu"))
+model.add(Conv2D(64, (1, 3), strides = (1,2), padding = "VALID", activation="relu"))
 model.add(Flatten())
-model.add(Dense(1 * 360,activation="relu"))
-model.add(Dropout(0.5))
-model.add(Dense(1 * 120,activation="relu"))
-model.add(Dropout(0.5))
-model.add(Dense(1 * 10,activation="relu"))
-#model.add(Dropout(0.5))
+model.add(Dense(100,activation="relu"))
+model.add(Dense(50,activation="relu"))
+model.add(Dense(10,activation="relu"))
 model.add(Dense(1))
-
-#model = Sequential()
-#model.add(Lambda(lambda x : (x / 255.0) - 0.5, input_shape=(160,320,3)))
-#model.add(Cropping2D(cropping=((70,25),(0,0))))
-#model.add(Conv2D(1 * 6, (5, 5), activation="relu"))
-#model.add(MaxPooling2D())
-#model.add(Conv2D(1 * 16, (5, 5), activation="relu"))
-#model.add(MaxPooling2D())
-##model.add(Dropout(0.5))
-#model.add(Flatten())
-#model.add(Dense(1 * 120,activation="relu"))
-##model.add(Dropout(0.5))
-#model.add(Dense(1 * 84,activation="relu"))
-##model.add(Dropout(0.5))
-#model.add(Dense(1))
 
 
 model.compile(loss='mse', optimizer='adam')
@@ -135,11 +113,9 @@ model.compile(loss='mse', optimizer='adam')
 model.fit_generator(
     generator(train_logs),
     len(train_logs) // batch_size,
-    epochs=10,
+    epochs=5,
     validation_data = generator(valid_logs),
     validation_steps = len(valid_logs) // batch_size)
-
-#model.fit(X_train,y_train, validation_split=0.2, shuffle=True, epochs=5)
 
 model.save('model.h5')
 

@@ -52,18 +52,19 @@ The code for this step is located under Camera Calibration in the notebook Advan
 
 The function undistort uses the matrix/coeffiecients to undistort an image using cv2.undistort. This is the function that is used in lane finding pipeline. Below is an example of undistort applied to one of the checkerboard calibration images.
 
-![alt text][undistort]
+![alt text][mask]
 
 ### Pipeline (single images)
 
-#### 1. Provide an example of a distortion-corrected image.
+### 1. Provide an example of a distortion-corrected image.
 
-To demonstrate this step, I will describe how I apply the distortion correction to one of the test images like this one:
-![alt text][image2]
+Appying the undistort function is the first step in the pipeline. Above is an example of it applied to one of the checkerboard calibration images.
 
-#### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
+### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
 
-I used a combination of color and gradient thresholds to generate a binary image (thresholding steps at lines # through # in `another_file.py`).  Here's an example of my output for this step.  (note: this is not actually from one of the test images)
+The code for this step is located under Gradient and Color Masks in the notebook AdvancedLaneLines.ipynb. I created various functions to create masks (i.e binary thresholded images). This included gradient, gradient direction, and hls colorspace masks. Also, I created function to create the conjunction and disjunction of mask. I tried various combinations of mask, but finally settled on a hls colorspace saturation mask. It seemed to work ok, and let me focus on other parts of the project. 
+
+The mask function is the second step in the pipeline and applies the saturation mask. Below is and example of it applied to a test image.
 
 ![alt text][image3]
 

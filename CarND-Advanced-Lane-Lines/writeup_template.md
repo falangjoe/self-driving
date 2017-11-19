@@ -17,12 +17,12 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[fit]: ./examples/fit.jpg "Fit"
-[mask]: ./examples/mask.jpg "Mask"
-[process]: ./examples/process.jpg "Process"
-[sliding]: ./examples/sliding.jpg "Sliding"
-[transform]: ./examples/transform.jpg "Transform"
-[undistort]: ./examples/undistort.jpg "Undistort"
+[fit]: ./writeup_images/fit.jpg "Fit"
+[mask]: ./writeup_images/mask.jpg "Mask"
+[process]: ./writeup_images/process.jpg "Process"
+[sliding]: ./writeup_images/sliding.jpg "Sliding"
+[transform]: ./writeup_images/transform.jpg "Transform"
+[undistort]: ./writeup_images/undistort.jpg "Undistort"
 
 
 [image1]: ./examples/undistort_output.png "Undistorted"

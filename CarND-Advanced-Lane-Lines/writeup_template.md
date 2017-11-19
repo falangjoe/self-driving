@@ -79,7 +79,7 @@ Since the transform function determines how far out we are trying to find lane l
 
 ![alt text][transform]
 
-#### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
+### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 The code for this step located under Fitting Lines in the notebook AdvancedLaneLines.ipynb. I used the code from class to create a sliding_windows_fit function. Here is an example of it's use.
 
 ![alt text][sliding]
@@ -88,15 +88,16 @@ I then created the fit function using code from class to fit new lines base on p
 
 ![alt text][fit]
 
-#### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
+### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
-I did this in lines # through # in my code in `my_other_file.py`
+I create a function calculate_curvature under Fitting Lines in the notebook AdvancedLaneLines.ipynb using the method outlined in class. 
+I then modifed my fit function to also calculated the curvature.
 
-#### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
+### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 
-I implemented this step in lines # through # in my code in `yet_another_file.py` in the function `map_lane()`.  Here is an example of my result on a test image:
+I implmented the process_image to perform the whole pipeline on a frame and keep track of previous frames. It is located under Frame Processing in the notebook AdvancedLaneLines.ipynb. Below is an example of it being applied to an image.
 
-![alt text][image6]
+![alt text][process]
 
 ---
 

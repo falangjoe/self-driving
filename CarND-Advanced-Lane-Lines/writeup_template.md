@@ -26,14 +26,6 @@ The goals / steps of this project are the following:
 [points]: ./writeup_images/points.JPG "Points"
 
 
-[image1]: ./examples/undistort_output.png "Undistorted"
-[image2]: ./test_images/test1.jpg "Road Transformed"
-[image3]: ./examples/binary_combo_example.jpg "Binary Example"
-[image4]: ./examples/warped_straight_lines.jpg "Warp Example"
-[image5]: ./examples/color_fit_lines.jpg "Fit Visual"
-[image6]: ./examples/example_output.jpg "Output"
-[video1]: ./project_video.mp4 "Video"
-
 ## Rubric Points
 
 Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/571/view) individually and describe how I addressed each point in my implementation.  
@@ -111,6 +103,10 @@ Here's a [link to my video result](./output_videos/project_video.mp4)
 
 ### Discussion
 
-#### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
+### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+I created the thresholded binary image using just the saturation hls color component. I am sure that there are a lot better ones that could be used, but experimenting became a big time suck and I was not getting great results. To improve it using the current approach, I would just look at what other had done. It seems like there could be a more robust approach using convolutional networks and maybe computationally less expensive, but generating training data is an issue. You would need the videos along with lane line positions.
+
+I averaged the last 10 frames to get the current line fit and curvature. This made things jump around less, but I would still get bad frames. Therefore, before accepting a new frame, I would check the L1 distance between the curve and the previous average. If the L1 distance was two big, I would skip the frame. Removing these frames, fixed failures that would occur. Beyond the L1 distance, it seems we need for metrics to accept or reject frames. Also, I need some way of tracking the rejections to know when to apply sliding windows again.
+
+

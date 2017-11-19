@@ -80,10 +80,13 @@ Since the transform function determines how far out we are trying to find lane l
 ![alt text][transform]
 
 #### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
+The code for this step located under Fitting Lines in the notebook AdvancedLaneLines.ipynb. I used the code from class to create a sliding_windows_fit function. Here is an example of it's use.
 
-Then I did some other stuff and fit my lane lines with a 2nd order polynomial kinda like this:
+![alt text][sliding]
 
-![alt text][image5]
+I then created the fit function using code from class to fit new lines base on previous fit lines. Here is an example of it's use.
+
+![alt text][fit]
 
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 

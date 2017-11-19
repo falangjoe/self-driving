@@ -1,6 +1,4 @@
-## Writeup Template
-
-### You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
+## **Advanced Lane Finding**
 
 ---
 
@@ -19,6 +17,14 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
+[fit]: ./examples/fit.jpg "Fit"
+[mask]: ./examples/mask.jpg "Mask"
+[process]: ./examples/process.jpg "Process"
+[sliding]: ./examples/sliding.jpg "Sliding"
+[transform]: ./examples/transform.jpg "Transform"
+[undistort]: ./examples/undistort.jpg "Undistort"
+
+
 [image1]: ./examples/undistort_output.png "Undistorted"
 [image2]: ./test_images/test1.jpg "Road Transformed"
 [image3]: ./examples/binary_combo_example.jpg "Binary Example"
@@ -27,15 +33,14 @@ The goals / steps of this project are the following:
 [image6]: ./examples/example_output.jpg "Output"
 [video1]: ./project_video.mp4 "Video"
 
-## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
+## Rubric Points
 
-### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
-
+Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/571/view) individually and describe how I addressed each point in my implementation.  
 ---
 
 ### Writeup / README
 
-#### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one.  You can submit your writeup as markdown or pdf.  [Here](https://github.com/udacity/CarND-Advanced-Lane-Lines/blob/master/writeup_template.md) is a template writeup for this project you can use as a guide and a starting point.  
+#### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one.
 
 You're reading it!
 
@@ -43,13 +48,11 @@ You're reading it!
 
 #### 1. Briefly state how you computed the camera matrix and distortion coefficients. Provide an example of a distortion corrected calibration image.
 
-The code for this step is contained in the first code cell of the IPython notebook located in "./examples/example.ipynb" (or in lines # through # of the file called `some_file.py`).  
+The code for this step is located under Camera Calibration in the notebook AdvancedLaneLines.ipynb. The function calibrate camera calculates the camera matrix and distortion coefficients used by the function undistort. It first finds the checker board corners for all 20 of the calibration images using cv2.findChessboardCorners. Then, it uses the corners with cv2.calibrateCamera to create the matrix/coeffiecients. 
 
-I start by preparing "object points", which will be the (x, y, z) coordinates of the chessboard corners in the world. Here I am assuming the chessboard is fixed on the (x, y) plane at z=0, such that the object points are the same for each calibration image.  Thus, `objp` is just a replicated array of coordinates, and `objpoints` will be appended with a copy of it every time I successfully detect all chessboard corners in a test image.  `imgpoints` will be appended with the (x, y) pixel position of each of the corners in the image plane with each successful chessboard detection.  
+The function undistort uses the matrix/coeffiecients to undistort an image using cv2.undistort. This is the function that is used in lane finding pipeline. Below is an example of undistort applied to one of the checkerboard calibration images.
 
-I then used the output `objpoints` and `imgpoints` to compute the camera calibration and distortion coefficients using the `cv2.calibrateCamera()` function.  I applied this distortion correction to the test image using the `cv2.undistort()` function and obtained this result: 
-
-![alt text][image1]
+![alt text][undistort]
 
 ### Pipeline (single images)
 

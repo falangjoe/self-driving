@@ -34,7 +34,7 @@ You're reading it!
 
 #### 1. Explain how (and identify where in your code) you extracted HOG features from the training images.
 
-The code for this step is located under Extracting Features in the notebook VehicleDetectionAndTracking.ipynb. Functions were created to extract hog, spatial, and color histogram features. I also created a function that runs all three of these feature extractors and concatenates their output. This function was used both for training and sliding windows classification. When sliding windows classifiction is done, the precomputed hog features are passed to function and not recomputed.
+The code for this step is located under Extracting Features in the notebook VehicleDetectionAndTracking.ipynb. Functions were created to extract HOG, spatial, and color histogram features. I also created a function that runs all three of these feature extractors and concatenates their output. This function was used both for training and sliding windows classification. When sliding windows classifiction is done, the precomputed HOG features are passed to function and not recomputed.
 
 Moreover, I have a function to seperate training files into cars/notcar groups and a function to load the files/extract features for a groups of images.
 
@@ -48,7 +48,7 @@ pix_per_cell = 16
 cell_per_block = 2
 orientations = 9
 
-This allowed me to reduce the feature count, but still get the sliding window positions that I needed. I left the orientations to the value used in the lecture. 
+This allowed me to reduce the HOG feature count, but still get the sliding window positions that I needed. I left the orientations to the value used in the lecture. 
 
 #### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
@@ -84,12 +84,11 @@ Here's a [link to my video result](./output_videos/project_video.mp4)
 
 #### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
 
-I used the method presented in the lecture using heatmaps to create bounding boxes, with some changes. I created heatmaps for each scale and thresholded each one seperately. I did this so that the detections at different scales would not intefer so much with each other. Once each scale was thresholded, I saved the sum of these heatmaps per frame. The pipeline would find the mean of the heatmaps from the last 10 frames and use the threshold of the mean to create the bounding boxes. 
----
+I used the method presented in the lecture using heatmaps to create bounding boxes, with some changes. I created heatmaps for each scale and thresholded each one seperately. I did this so that the detections at different scales would not interfere so much with each other. Once each scale was thresholded, I saved the sum of these heatmaps per frame. The pipeline would find the mean of the heatmaps from the last 10 frames and use the threshold of the mean to create the bounding boxes. 
 
 ### Discussion
 
 #### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-As you can see from the video. The pipeline is detecting cars going in the oppisite direction on the other side of the highway. Since these are moving fast relative to the camera, the heatmaps are spread out and the bounding boxes do not track these cars well. Therefore, someway of tracking the velocity of the boxes relative to the camera is need. Also, the bounding boxes change shape and position in a non continuous way, but we know that the bounding boxes should move and change size in a continuous manner. Therefore by making changes to the size and position of a box in a more continuous way each frame could give better tracking of the cars. Moreover, the svm is probably overfitting the data, because of the time series issue. Training with better curated data could probably getter better results and maybe allow the spatial and histogram features to be removed speeding up the pipeline.
+As you can see from the video, the pipeline is detecting cars going in the opposite direction on the other side of the highway. Since these are moving fast relative to the camera, the heatmaps are spread out and the bounding boxes do not track these cars well. Therefore, someway of tracking the velocity of the boxes relative to the camera is need. Also, the bounding boxes change shape and position in a non continuous way, but we know that the bounding boxes should move and change size in a continuous manner. Therefore by making changes to the size and position of a box in a more continuous way each frame could give better tracking of the cars. Moreover, the svm is probably overfitting the data, because of the time series issue. Training with better curated data could probably get better results and maybe allow the spatial and histogram features to be removed speeding up the pipeline.
 

@@ -70,11 +70,10 @@ The code for this step is located under Sliding Windows in the notebook VehicleD
 
 #### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
-![alt text][slidingwindows3]
+![alt text][pipeline]
 
 This shows my pipeline on one image with bounding boxes. I searched on three scales totaling 117 + 57 + 27 = 201 windows. Hog features alone work pretty good, but I had to add spatial color and color histograms to get rid of all false positives. Everything was done with the YUV color space.
 
-![alt text][image4]
 ---
 
 ### Video Implementation
